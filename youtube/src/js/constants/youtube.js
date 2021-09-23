@@ -17,3 +17,5 @@ export const CHIP_LIST = [
   '감상한 동영상',
   '새로운 맞춤 동영상',
 ];
+
+export const TEMP_VIDEO_INFO = 'temp-video-info';

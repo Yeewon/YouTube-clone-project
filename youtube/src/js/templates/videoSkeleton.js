@@ -1,5 +1,5 @@
 export const videoSkeletonTemplate = () => {
-    return `<div class="clip skeleton">
+  return `<div class="clip skeleton">
                 <div class="preview-container image"></div>
                 <div class="content-container pt-2">
                     <div>

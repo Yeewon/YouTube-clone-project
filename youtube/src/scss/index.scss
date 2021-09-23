@@ -12,14 +12,14 @@
   border-bottom: $lightgray-border;
   p {
     padding-top: 15px;
-    padding-left: 20px;
+    padding-left: 30px;
     font-size: 15px; 
     font-weight: bold; 
     color: gray;
   }
 
   .sidebar-subscribe-item{
-    padding-left: 20px;
+    padding-left: 30px;
     padding-top: 10px;
   }
 
@@ -27,13 +27,12 @@
     display: flex;
     font-size: 14px;
     cursor: pointer;
-    padding-bottom: 10px;
+    padding-bottom: 5px;
     padding-left: 10px;
     .sidebar-icon {
       width: 45px;
       height: 45px;
       padding-top: 15px;
-      // margin-right: 10px;
     }
     .sidebar-title{
       height: 25px;
@@ -45,6 +44,11 @@
   div:hover{
     background-color: #e5e5e5;
   }
+}
+
+@mixin video-skeleton{
+  background-image: linear-gradient(90deg, #e0e0e0 0px, #ededed 30px, #e0e0e0 60px);
+  animation: refresh 2s infinite ease-out;
 }
 
 $lightgray-border: 1px solid lightgray;
@@ -76,7 +80,6 @@ body,
       .menu {
         cursor: pointer;
         width: 70px;
-        // border: 2px solid red;
         .menu-bar-svg{
           padding: 17px;
         }
@@ -103,9 +106,7 @@ body,
       flex: 1;
       overflow-y: auto;
       min-width: 0px;
-      // border: 2px solid orange; 
       .video-search-form{
-        display: flex;
         align-items: center;
         overflow-y: auto;
         .video-search-input{
@@ -149,7 +150,6 @@ body,
       display: flex;
       justify-content: center;
       padding-right: 10px;
-      // border: 2px solid yellowgreen;
 
       div {
         cursor: pointer;
@@ -172,22 +172,18 @@ body,
     flex: 1;
     overflow-y: auto;
     .mini-sidebar {
-      display: flex;
       width: 70px;
       .sidebar-main-section{
         .mini-sidebar-item {
           display: flex;
           flex-direction: column;
-          // font-size: 10px;
           cursor: pointer;
           padding: 15px 20px 15px 20px;
           
           .section-title{
             font-size: 10px;
           }
-          .sidebar-icon {
 
-          }
           .sidebar-title{
             text-align: center;
             font-size: 10px;
@@ -201,12 +197,10 @@ body,
     }
 
     .sidebar {
-      display: flex;
       flex-direction: column;
       overflow: auto;
       width: 230px;
       height: 100%;
-      // border: 2px solid lightblue;
 
       .sidebar-main-section{
         @include sidebar-section()
@@ -227,7 +221,8 @@ body,
         display: flex;
         flex-wrap: wrap;
         div {
-          margin: 7px;
+          margin: 20px;
+          margin-bottom: 0px;
           a {
             padding: 3px;
             text-decoration: none;
@@ -249,6 +244,7 @@ body,
       overflow-y: auto;
 
       .chip{
+        justify-content: center;
         overflow: auto;
         min-height: 56px;
         border-top: $lightgray-border;
@@ -261,10 +257,10 @@ body,
             min-height: min-content;
             cursor: pointer;
             margin: 8px;
-            padding: 7px;
-            border: $lightgray-border;
-            background-color: rgb(236, 235, 235);
-            border-radius: 1rem;
+            padding: 10px;
+            border: 1px solid lightgray;
+            background-color: #ecebeb;
+            border-radius: 2rem;
             font-size: 14px;
           }
         }
@@ -276,12 +272,29 @@ body,
 
       .videos {
         display: flex;
+        justify-content: center;
         flex-wrap: wrap;
-        // border: 2px solid;
         height: 100vh;
         background-color: #f9f9f9;
         font-size: 15px;
         overflow: auto;
+
+        .first-page{
+          font-family: monospace;
+          width: 100%;
+          height: 100%;
+          font-size: 30px;
+          font-weight: 100;
+          text-align: center;
+          padding: 10%;
+        }
+
+        .video-not-found{
+          width: 100%;
+          height: 100%;
+          text-align: center;
+          padding: 200px;
+        }
 
         .skeleton {
           display: flex;
@@ -294,22 +307,19 @@ body,
           text-decoration: none;
           margin: 10px;
           .image {
-            background-image: linear-gradient(90deg, #e0e0e0 0px, #ededed 30px, #e0e0e0 60px);
-            animation: refresh 2s infinite ease-out;
+            @include video-skeleton();
             height: 120px;
           } 
           .line {
             
             :first-child{
-              background-image: linear-gradient(90deg, #e0e0e0 0px, #ededed 30px, #e0e0e0 60px);
-              animation: refresh 2s infinite ease-out;
+              @include video-skeleton();
               height: 20px;
               margin-bottom: 10px;
             }
 
             :last-child{
-              background-image: linear-gradient(90deg, #e0e0e0 0px, #ededed 30px, #e0e0e0 60px);
-              animation: refresh 2s infinite ease-out;
+              @include video-skeleton();
               height: 20px;
               width: 70%;
             }
@@ -337,28 +347,51 @@ body,
     }
   }
 }
-
-@media (max-width: 1313px){
-  // sidebar 사라지고 min-sidebar 보여줌
-  .sidebar {
-    display: none !important;
+@media (min-width: 1313px){
+  .sidebar{
+    display: flex;
   }
   .mini-sidebar{
-    display: flex !important;
+    display: none;
+  }
+  .video-search-form {
+    display: flex;
+  }
+  .mini-search {
+    display: none;
+  }
+}
+
+@media (max-width: 1313px){
+  .sidebar {
+    display: none;
+  }
+  .mini-sidebar{
+    display: flex;
+  }
+  .video-search-form {
+    display: flex;
+  }
+  .mini-search {
+    display: none;
   }
 }
 @media (max-width: 792px){
-  // mini-sidebar도 완전 사라짐 
   .mini-sidebar {
-    display: none !important;
+    display: none;
+  }
+  .video-search-form {
+    display: flex;
+  }
+  .mini-search {
+    display: none;
   }
 }
 @media (max-width: 741px){
-  // 검색 input 부분 사라짐 
   .video-search-form {
-    display: none !important;
+    display: none;
   }
   .mini-search {
-    display: flex !important;
+    display: flex;
   }
 }

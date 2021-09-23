@@ -6,33 +6,56 @@ import {
   renderMiniSidebar,
   renderSearchedVideo,
   renderSidebar,
+  renderMainTemplates,
 } from './utils/render.js';
 import Sidebar from './handlers/Sidebar.js';
 import { $ } from './utils/DOM.js';
 import { videoSkeletonTemplate } from './templates/videoSkeleton.js';
 import { FETCH_VIDEO_COUNT } from './constants/api.js';
+import { TEMP_VIDEO_INFO } from './constants/youtube.js';
+import { firstPageTemplate } from './templates/firstPage.js';
+import { searchNotFoundTemplate } from './templates/searchNotFound.js';
 
 export default function App({ $target }) {
   this.state = {
     keyword: '',
-    searchedVideoInfos: getLocalStorage('temp-video-info'),
+    searchedVideoInfos: getLocalStorage(TEMP_VIDEO_INFO),
   };
 
   this.setState = nextState => {
     this.state = nextState;
     this.render();
   };
+
+  this.render = () => {
+    renderMainTemplates();
+    if (!this.state.searchedVideoInfos) {
+      $('.videos').innerHTML = firstPageTemplate();
+    } else {
+      renderSearchedVideo(this.state.searchedVideoInfos);
+    }
+    renderChipItems();
+    renderSidebar();
+    renderMiniSidebar();
+  };
+
+  this.render();
+
   new SearchVideo({
     onKeywordInput: async keyword => {
-      $('.videos').innerHTML = videoSkeletonTemplate().repeat(FETCH_VIDEO_COUNT);
+      $('.videos').innerHTML =
+        videoSkeletonTemplate().repeat(FETCH_VIDEO_COUNT);
       const { items } = await request(keyword);
-      console.log(items);
-      setLocalStorage('temp-video-info', items);
-      this.setState({
-        ...this.state,
-        keyword,
-        searchedVideoInfos: items,
-      });
+      if (items.length === 0) {
+        $('.videos').innerHTML = searchNotFoundTemplate();
+      } else {
+        setLocalStorage(TEMP_VIDEO_INFO, items);
+        this.setState({
+          ...this.state,
+          keyword,
+          searchedVideoInfos: items,
+        });
+      }
     },
   });
 
@@ -49,17 +72,4 @@ export default function App({ $target }) {
       }
     },
   });
-
-  this.render = () => {
-    if(!this.state.searchedVideoInfos){
-      $('.videos').innerHTML = videoSkeletonTemplate().repeat(FETCH_VIDEO_COUNT);
-    }else {
-      renderSearchedVideo(this.state.searchedVideoInfos);
-    }
-    renderChipItems();
-    renderSidebar();
-    renderMiniSidebar();
-  };
-
-  this.render();
 }
